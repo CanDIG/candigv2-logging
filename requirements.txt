@@ -1,0 +1,4 @@
+requests==2.32.2
+pytest==7.2.0
+PyJWT==2.6.0
+cryptography>=3.4.0
