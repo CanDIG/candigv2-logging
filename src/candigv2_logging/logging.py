@@ -57,8 +57,7 @@ def getLogger(file_name):
     return logging.getLogger(file_name)
 
 
-def log_message(level, message, request=None):
-    logger = getLogger(__file__)
+def compile_message(message, request):
     result = {"message": message}
     if request is not None:
         if hasattr(request, "path"):
@@ -70,5 +69,22 @@ def log_message(level, message, request=None):
         try:
             result.update(get_session_details(request))
         except Exception as e:
-            logger.info(f"Logging exception {type(e)}: {str(e)}")
-    logger.info(result)
+            result["log_error"] = f"Logging exception {type(e)}: {str(e)}"
+    return result
+
+
+def log_message(level, message, request=None):
+    logger = getLogger(__file__)
+    result = compile_message(message, request)
+    if level.upper() == "DEBUG":
+        logger.debug(result)
+    elif level.upper() == "INFO":
+        logger.info(result)
+    elif level.upper() == "WARNING":
+        logger.warning(result)
+    elif level.upper() == "ERROR":
+        logger.error(result)
+    elif level.upper() == "CRITICAL":
+        logger.critical(result)
+    else:
+        logger.info(result)
