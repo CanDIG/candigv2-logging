@@ -59,7 +59,7 @@ class CanDIGLogger:
         self.logger = logging.getLogger(file_name)
 
 
-    def compile_message(self, message, request, level):
+    def compile_message(self, message, request):
         result = {"message": message}
         if request is not None:
             if hasattr(request, "path"):
@@ -73,9 +73,6 @@ class CanDIGLogger:
                 result["query"] = request.GET.dict()
             elif hasattr(request, "POST"): # this is what it's called in a Django HttpRequest
                 result["query"] = request.POST.dict()
-            ## add request data if it's a debug-level message
-            if level.upper() == "DEBUG" and hasattr(request, "json"):
-                result["data"] = request.json
             try:
                 result.update(get_session_details(request))
             except Exception as e:
@@ -84,7 +81,7 @@ class CanDIGLogger:
 
 
     def log_message(self, level, message, request=None):
-        result = self.compile_message(message, request, level)
+        result = self.compile_message(message, request)
         if level.upper() == "DEBUG":
             self.logger.debug(result)
         elif level.upper() == "INFO":
@@ -97,3 +94,36 @@ class CanDIGLogger:
             self.logger.critical(result)
         else:
             self.logger.info(result)
+
+
+    def info(self, message, request):
+        result = self.compile_message(message, request)
+        self.logger.info(result)
+
+
+    def debug(self, message, request):
+        result = self.compile_message(message, request)
+        ## add request data if it's a debug-level message
+        if hasattr(request, "json"):
+            result["data"] = request.json
+        self.logger.debug(result)
+
+
+    def warning(self, message, request):
+        result = self.compile_message(message, request)
+        self.logger.warning(result)
+
+
+    def error(self, message, request):
+        result = self.compile_message(message, request)
+        self.logger.error(result)
+
+
+    def exception(self, message, request):
+        result = self.compile_message(message, request)
+        self.logger.error(result)
+
+
+    def critical(self, message, request):
+        result = self.compile_message(message, request)
+        self.logger.critical(result)
