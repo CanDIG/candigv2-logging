@@ -23,12 +23,15 @@ import candigv2_logging.logging
 candigv2_logging.logging.initialize()
 ```
 
-Afterwards, instead of instantiating a logger to log messages, call
+Afterwards, instantiate a candigv2.logging.CanDIGLogger instance and use that to log:
 
 ```
-from candigv2_logging.logging import log_message
+from candigv2_logging.logging import CanDIGLogger
+
+
+logger = CanDIGLogger(__file__)
 
 ...
-    log_message("INFO", f"whatever you want to log", request)
+    logger.log_message("INFO", f"whatever you want to log", request)
 ...
 ```
