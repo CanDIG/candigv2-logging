@@ -57,15 +57,23 @@ def getLogger(file_name):
     return logging.getLogger(file_name)
 
 
-def compile_message(message, request):
+def compile_message(message, request, level):
     result = {"message": message}
     if request is not None:
         if hasattr(request, "path"):
             result["path"] = request.path
         if hasattr(request, "method"):
             result["method"] = request.method
-        if hasattr(request, "query_string"):
-            result["query"] = request.query_string
+        ## query parameters
+        if hasattr(request, "query_string"): # this is what it's called in a Flask request
+            result["query"] = request.args.to_dict()
+        elif hasattr(request, "GET"): # this is what it's called in a Django HttpRequest
+            result["query"] = request.GET.dict()
+        elif hasattr(request, "POST"): # this is what it's called in a Django HttpRequest
+            result["query"] = request.POST.dict()
+        ## add request data if it's a debug-level message
+        if level.upper() == "DEBUG" and hasattr(request, "json"):
+            result["data"] = request.json
         try:
             result.update(get_session_details(request))
         except Exception as e:
@@ -75,7 +83,7 @@ def compile_message(message, request):
 
 def log_message(level, message, request=None):
     logger = getLogger(__file__)
-    result = compile_message(message, request)
+    result = compile_message(message, request, level)
     if level.upper() == "DEBUG":
         logger.debug(result)
     elif level.upper() == "INFO":
