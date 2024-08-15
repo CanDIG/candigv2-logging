@@ -24,7 +24,7 @@ class CandigLoggingError(Exception):
     pass
 
 
-def get_auth_token(request):
+def get_auth_token(request=None):
     """
     Extracts token from request's Authorization header
     """
@@ -37,7 +37,7 @@ def get_auth_token(request):
         return None
 
 
-def get_session_details(request):
+def get_session_details(request=None):
     result = {}
     token = get_auth_token(request)
     if token is not None:
@@ -96,12 +96,12 @@ class CanDIGLogger:
             self.logger.info(result)
 
 
-    def info(self, message, request):
+    def info(self, message, request=None):
         result = self.compile_message(message, request)
         self.logger.info(result)
 
 
-    def debug(self, message, request):
+    def debug(self, message, request=None):
         result = self.compile_message(message, request)
         ## add request data if it's a debug-level message
         if hasattr(request, "json"):
@@ -109,21 +109,21 @@ class CanDIGLogger:
         self.logger.debug(result)
 
 
-    def warning(self, message, request):
+    def warning(self, message, request=None):
         result = self.compile_message(message, request)
         self.logger.warning(result)
 
 
-    def error(self, message, request):
+    def error(self, message, request=None):
         result = self.compile_message(message, request)
         self.logger.error(result)
 
 
-    def exception(self, message, request):
+    def exception(self, message, request=None):
         result = self.compile_message(message, request)
         self.logger.error(result)
 
 
-    def critical(self, message, request):
+    def critical(self, message, request=None):
         result = self.compile_message(message, request)
         self.logger.critical(result)
