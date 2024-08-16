@@ -104,8 +104,11 @@ class CanDIGLogger:
     def debug(self, message, request=None):
         result = self.compile_message(message, request)
         ## add request data if it's a debug-level message
-        if hasattr(request, "json") and request.is_json:
-            result["data"] = request.json
+        try:
+            if hasattr(request, "json") and request.is_json:
+                result["data"] = request.json
+        except:
+            pass
         self.logger.debug(result)
 
 
