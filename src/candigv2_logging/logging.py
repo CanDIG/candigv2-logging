@@ -64,6 +64,8 @@ class CanDIGLogger:
         if request is not None:
             if hasattr(request, "path"):
                 result["path"] = request.path
+            elif hasattr(request, "url"): # this is what it's called in Requests.request
+                result["path"] = request.url
             if hasattr(request, "method"):
                 result["method"] = request.method
             ## query parameters
