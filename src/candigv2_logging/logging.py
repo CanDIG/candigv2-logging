@@ -10,7 +10,7 @@ import sys
 ## Env vars for most auth methods:
 TYK_LOGIN_TARGET_URL = os.getenv("TYK_LOGIN_TARGET_URL")
 SERVICE_NAME = os.getenv("SERVICE_NAME")
-CANDIG_USER_KEY = os.getenv("CANDIG_USER_KEY", "email")
+CANDIG_USER_KEY = os.getenv("CANDIG_USER_KEY", "preferred_username")
 DEBUG_MODE = os.getenv("DEBUG_MODE")
 
 
