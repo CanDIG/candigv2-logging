@@ -7,7 +7,6 @@ version = "v1.0.4"
 name = "candigv2_logging"
 dependencies = [
     "requests>=2.33.1",
-    "pytest>=9.0.3",
     "PyJWT>=2.12.0"
     ]
 requires-python = ">= 3.12"
