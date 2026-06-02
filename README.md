@@ -10,7 +10,7 @@ Add the following to your requirements.txt:
 candigv2-logging@git+https://github.com/CanDIG/candigv2-logging.git@develop
 ```
 
-Then add `import candigv2.logging` to your code.
+Then add `import candigv2_logging.logging` to your code.
 
 
 ## To log in a module:
